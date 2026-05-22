@@ -1,27 +1,30 @@
-import { Client, GatewayIntentBits, Partials, Collection } from 'discord.js'
+import { Client, GatewayIntentBits, Partials, Collection, IntentsBitField } from 'discord.js'
 import { config } from 'dotenv';
 config({ quiet: true })
+import Discord from 'discord.js'
 
 
 const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.GuildInvites,
-        GatewayIntentBits.GuildMessageReactions,
-        GatewayIntentBits.MessageContent,
-        GatewayIntentBits.GuildModeration,
-        GatewayIntentBits.DirectMessages
-    ],
-    partials: [
-        Partials.Channel,
-        Partials.Message,
-        Partials.User,
-        Partials.GuildMember,
-    ],
-})
-
+  intents: [
+    1, 512, 32768, 2, 128,
+  IntentsBitField.Flags.DirectMessages,
+  IntentsBitField.Flags.GuildInvites,
+  IntentsBitField.Flags.GuildMembers,
+  IntentsBitField.Flags.GuildPresences,
+  IntentsBitField.Flags.Guilds,
+  IntentsBitField.Flags.MessageContent,
+  IntentsBitField.Flags.Guilds,
+  IntentsBitField.Flags.GuildMessageReactions,
+  IntentsBitField.Flags.GuildEmojisAndStickers
+],
+  partials: [
+    Partials.User,
+    Partials.Message,
+    Partials.Reaction,
+    Partials.Channel,
+    Partials.GuildMember
+  ]
+});
 
 
 client.commands = new Collection();
@@ -54,16 +57,26 @@ async function initialize() {
 
 initialize()
 
-
-
-
-
-
-
-
-
 export default client;
 
 
+client.on('interactionCreate', (interaction) => {
 
+  if (interaction.type === Discord.InteractionType.ApplicationCommand) {
 
+    const cmd = client.slashCommands.get(interaction.commandName);
+
+    if (!cmd) return interaction.reply(`Error`);
+
+    interaction["member"] = interaction.guild.members.cache.get(interaction.user.id);
+
+    cmd.run(client, interaction)
+
+  }
+})
+
+import Handler from './Handler/index.js'
+import Mention from './Events/Mention.js'
+
+Handler(client)
+Mention(client)
