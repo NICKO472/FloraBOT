@@ -1,17 +1,53 @@
 import Discord from 'discord.js'
+import { QuickDB } from 'quick.db'
+import fs from 'fs'
+import { SlashCommandBuilder } from 'discord.js';
+
+const db = new QuickDB()
+
+const br = JSON.parse(fs.readFileSync('./src/Languages/br.json'))
+const pt = JSON.parse(fs.readFileSync('./src/Languages/pt.json'))
+const en = JSON.parse(fs.readFileSync('./src/Languages/en.json'))
+const es = JSON.parse(fs.readFileSync('./src/Languages/es.json'))
+const fr = JSON.parse(fs.readFileSync('./src/Languages/fr.json'))
+
+const languages = {
+    br,
+    pt,
+    en,
+    es,
+    fr
+}
+
 
 export default {
-    name: 'ping',
-    description: 'Pong!',
+    data: new SlashCommandBuilder()
+    .setName('ping')
+    .setDescription('Mostra a latência do bot e da API'),
+    category: 'utilidade',
+    cooldown: 3,
 
-    run: async (client, interaction) => {
+    async execute(interaction, client)  {
+
+        let lang
+        let userlang = await db.get(`lang_${interaction.user.id}`)
+
+        if (userlang === null) {
+            lang = await db.get(`lang_${interaction.guild.id}`)
+
+            if (lang === null) lang = 'br'
+        } else {
+            lang = userlang
+        }
+
+        const text = languages[lang] || languages.br
 
         const embed_1 = new Discord.EmbedBuilder()
             .setAuthor({
                 name: client.user.username,
                 iconURL: client.user.displayAvatarURL()
             })
-            .setDescription(`Olá ${interaction.user}, calculando ping...`)
+            .setDescription(`${interaction.user} ${text.pingLoading}`)
             .setColor('#FFFFFF')
 
         await interaction.reply({
@@ -25,7 +61,7 @@ export default {
                 name: client.user.username,
                 iconURL: client.user.displayAvatarURL()
             })
-            .setDescription(`Olá ${interaction.user}, meu ping está em \`${ping}ms\`.`)
+            .setDescription(`${interaction.user} ${text.pingLoaded} \`${ping}ms\`.`)
             .setColor('#FFFFFF')
 
         setTimeout(() => {
@@ -33,6 +69,5 @@ export default {
                 embeds: [embed_2]
             })
         }, 2000)
-
     }
 }

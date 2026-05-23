@@ -26,7 +26,7 @@ export default async function Handler(client) {
 
                     if (!cmd?.name) continue
 
-                    client.slashCommands.set(cmd.name, cmd)
+                    client.Comandos.set(cmd.name, cmd)
 
                     SlashsArray.push(cmd)
 

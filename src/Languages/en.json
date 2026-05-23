@@ -1,0 +1,8 @@
+{
+  "pingLoading": "Hello! Calculating ping...",
+  "pingLoaded": "My ping:",
+
+   "mentionHelp": "Type",
+  "mentionCommands": "To see my commands",
+  "mentionHello": "Hello"
+}
