@@ -47,6 +47,12 @@ client.warnings = new Map();
 
 client.queue = new Map()
 
+client.config = {
+    ownerIds: process.env.OWNER_ID ? process.env.OWNER_ID.split(',') : [],
+    embedColor: '#ffffff',
+    errorColor: '#ed4245',
+    successColor: '#57f287'
+};
 
 import { Player } from 'discord-player'
 import { DefaultExtractors } from '@discord-player/extractor'
@@ -218,6 +224,8 @@ export default client;
 
 import Handler from './Handler/index.js'
 import Mention from './Events/Mention.js'
+import XPSystem from './Events/XPSystem.js';
 
 Handler(client)
 Mention(client)
+XPSystem(client)

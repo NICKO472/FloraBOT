@@ -2,50 +2,29 @@ import fs from 'fs'
 
 export default async function Handler(client) {
 
-    console.log("Handler iniciado")
+    console.log('Handler iniciado')
 
     const SlashsArray = []
 
-    fs.readdir('./src/Comandos', (error, folders) => {
+    const folders = fs.readdirSync('./src/Comandos')
 
-        if (error) return console.log(error)
+    for (const subfolder of folders) {
 
-        folders.forEach(subfolder => {
+        const files = fs
+            .readdirSync(`./src/Comandos/${subfolder}`)
+            .filter(file => file.endsWith('.js'))
 
-            fs.readdir(`./src/Comandos/${subfolder}`, async (error, files) => {
+        for (const file of files) {
 
-                if (error) return console.log(error)
+            const command = await import(`../Comandos/${subfolder}/${file}`)
 
-                for (const file of files) {
+            const cmd = command.default
 
-                    if (!file.endsWith('.js')) continue
+            if (!cmd?.data?.name) continue
 
-                    const command = await import(`../Comandos/${subfolder}/${file}`)
+            client.Comandos.set(cmd.data.name, cmd)
 
-                    const cmd = command.default
-
-                    if (!cmd?.name) continue
-
-                    client.Comandos.set(cmd.name, cmd)
-
-                    SlashsArray.push(cmd)
-
-                    console.log(`Comando carregado: ${cmd.name}`)
-
-                }
-
-            })
-
-        })
-
-    })
-
-    client.on('clientReady', async () => {
-
-        client.guilds.cache.forEach(guild => {
-            guild.commands.set(SlashsArray)
-        })
-
-    })
-
+            SlashsArray.push(cmd.data.toJSON())
+        }
+    }
 }
