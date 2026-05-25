@@ -10,7 +10,7 @@ export default async function XPSystem(client)  {
 
             await db.add(`level_${interaction.user.id}`, 1)
 
-            interaction.reply({content: `🎉 ${interaction.user} subiu para o nível ${level + 1}!`, ephemeral: true})
+            interaction.reply({content: `🎉 ${interaction.user} subiu para o nível ${level + 1}!`})
 }
 
             await db.set(`xp_${interaction.user.id}`, xp + Math.floor(Math.random() * 15) + 5)

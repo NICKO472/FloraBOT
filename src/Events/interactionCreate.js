@@ -57,7 +57,7 @@ export default {
         try {
 
             console.log(
-                `⚡ Slash command executado: /${interaction.commandName}`
+                `⚡ Slash command executado: /${interaction.commandName} | Usuário: ${interaction.user.tag} | Servidor: ${interaction.guild?.name || 'DM'} ⚡`
             )
 
             // =========================
@@ -102,6 +102,7 @@ export default {
                         return interaction.reply({
                             content:
                                 `⏰ Espere ${timeLeft.toFixed(1)}s para usar novamente.`,
+                            flags: 64
                         })
                     }
                 }
@@ -121,7 +122,19 @@ export default {
             }
 
             // =========================
-            // EXECUTAR
+            // AUTO DEFER
+            // =========================
+
+            if (
+                !interaction.deferred &&
+                !interaction.replied
+            ) {
+
+                await interaction.deferReply()
+            }
+
+            // =========================
+            // EXECUTAR COMANDO
             // =========================
 
             await command.execute(
@@ -139,8 +152,8 @@ export default {
             try {
 
                 if (
-                    interaction.replied ||
-                    interaction.deferred
+                    interaction.deferred &&
+                    !interaction.replied
                 ) {
 
                     await interaction.editReply({
@@ -148,17 +161,21 @@ export default {
                             '❌ Ocorreu um erro ao executar este comando!'
                     })
 
-                } else {
+                } else if (!interaction.replied) {
 
                     await interaction.reply({
                         content:
                             '❌ Ocorreu um erro ao executar este comando!',
+                        flags: 64
                     })
                 }
 
             } catch (replyError) {
 
-                console.error(replyError)
+                console.error(
+                    'Erro ao responder interação:',
+                    replyError
+                )
             }
         }
     }

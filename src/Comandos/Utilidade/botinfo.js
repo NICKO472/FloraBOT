@@ -7,7 +7,6 @@ export default {
         .setName('botinfo')
         .setDescription('Mostra informações do bot'),
 
-    aliases: ['bi', 'infobot'],
     category: 'utilidade',
     cooldown: 3,
 
@@ -34,27 +33,27 @@ export default {
         if (cpu > 100.0) cpu = '100.0'
 
         const embed = new Discord.EmbedBuilder()
-            .setTitle('Sobre mim:')
+            .setTitle('<:about:1508598981905743904>Sobre mim<:about:1508598981905743904>')
             .setColor('#FFFFFF')
             .setDescription(`
-> Desenvolvedor: (\`NICKO#2057\`)
+> <:1193545036810440734:1508586268487974952>Desenvolvedor: **Nikinho (onikinhoo)**
 
-> Uso da CPU: \`${cpu}%\`
-> Uso de RAM: \`${ram} ${type}\`
-> Uptime: \`${ms(client.uptime)}\`
+> <:cpu:1508598994694045847>Uso da CPU: **${cpu}%**
+> <:ram:1508598984418132138>Uso de RAM: **${ram} ${type}**
+> Uptime: **${ms(client.uptime)}**
 
-> Latência da API: \`${Math.round(client.ws.ping)}ms\`
-> Latência da DataBase: \`${pingDB}\`
+> <:api:1508598996589875351>Latência  da API: **${Math.round(client.ws.ping)}ms**
+> Latência da DataBase: **${pingDB}**
 
-> Linguagem: \`NodeJs\`
+> <:js:1508598982732025980>Linguagem: **NodeJs**
 
-> **Equipe: [SpaceLab](https://discord.gg/nMavHpWHWv)**
+> <:equipe:1508598979607400458>**Equipe: Origins**
 
-> Estou em \`${client.guilds.cache.size}\` servidores
-> Gerenciando \`${client.users.cache.size}\` membros
+> <:presence:1508598993352003696>Estou em **${client.guilds.cache.size}** servidores
+> <:1220815226765836379:1508598980781670490>Gerenciando **${client.users.cache.size}** membros
 `)
 
-        await interaction.reply({
+        await interaction.editReply({
             embeds: [embed]
         })
     }

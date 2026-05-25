@@ -1,82 +1,93 @@
-import twemoji from 'twemoji-parser'
+import Canvas from '@napi-rs/canvas'
 
 export async function renderEmoji(
     ctx,
     text,
     x,
-    y
+    y,
+    emojiSize = 32
 ) {
 
-    const emojis = twemoji.parse(text)
-
-    let textIndex = 0
+    const emojiRegex =
+        /<a?:\w+:(\d+)>/g
 
     let currentX = x
 
-    for (const emoji of emojis) {
+    let lastIndex = 0
 
-        const emojiIndex =
-            text.indexOf(emoji.text, textIndex)
+    const matches =
+        [...text.matchAll(emojiRegex)]
 
-        // Texto antes do emoji
-        if (emojiIndex > textIndex) {
+    for (const match of matches) {
 
-            const chunk =
-                text.substring(
-                    textIndex,
-                    emojiIndex
-                )
+        const full = match[0]
+
+        const id = match[1]
+
+        const isAnimated =
+            full.startsWith('<a:')
+
+        const before =
+            text.slice(lastIndex, match.index)
+
+        // DESENHA TEXTO NORMAL
+        if (before) {
 
             ctx.fillText(
-                chunk,
+                before,
                 currentX,
                 y
             )
 
             currentX +=
-                ctx.measureText(chunk).width
+                ctx.measureText(before).width
         }
 
-        // Emoji
-        const image = await loadEmojiImage(
-            emoji.url
-        )
+        // URL DO EMOJI
+        const emojiURL =
+            `https://cdn.discordapp.com/emojis/${id}.${isAnimated ? 'gif' : 'png'}?size=96&quality=lossless`
 
-        const size =
-            parseInt(ctx.font) || 32
+        try {
 
-        ctx.drawImage(
-            image,
-            currentX,
-            y - size + 8,
-            size,
-            size
-        )
+            const emoji =
+                await Canvas.loadImage(emojiURL)
 
-        currentX += size
+            ctx.drawImage(
+                emoji,
+                currentX,
+                y - emojiSize + 8,
+                emojiSize,
+                emojiSize
+            )
 
-        textIndex =
-            emojiIndex + emoji.text.length
+            currentX += emojiSize + 6
+
+        } catch {
+
+            ctx.fillText(
+                full,
+                currentX,
+                y
+            )
+
+            currentX +=
+                ctx.measureText(full).width
+        }
+
+        lastIndex =
+            match.index + full.length
     }
 
-    // Texto restante
-    if (textIndex < text.length) {
+    // RESTO DO TEXTO
+    const rest =
+        text.slice(lastIndex)
 
-        const chunk =
-            text.substring(textIndex)
+    if (rest) {
 
         ctx.fillText(
-            chunk,
+            rest,
             currentX,
             y
         )
     }
-}
-
-async function loadEmojiImage(url) {
-
-    const Canvas =
-        await import('@napi-rs/canvas')
-
-    return Canvas.loadImage(url)
 }

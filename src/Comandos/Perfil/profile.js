@@ -31,45 +31,34 @@ export default {
     async execute(interaction) {
         try {
 
-        await interaction.deferReply()
+        const __filename = fileURLToPath(import.meta.url)
 
-        const __filename =
-            fileURLToPath(import.meta.url)
-
-        const __dirname =
-            path.dirname(__filename)
+        const __dirname = path.dirname(__filename)
 
         const user =
-            interaction.options.getUser('usuario') ||
-            interaction.user
+            interaction.options.getUser('usuario') || interaction.user
 
         if(user.bot) {
             return interaction.reply({ content: `Infelizmente, Bots não podem ter perfis.`, flags: 64})
         }
 
-        let backprofile =
-            await db.get(`profile_background_${user.id}`)
+        let backprofile = await db.get(`profile_background_${user.id}`)
 
-        const money =
-            await db.get(`money_${user.id}`) || 0
+        const money = await db.get(`money_${user.id}`) || 0
 
-        const bank =
-            await db.get(`bank_${user.id}`) || 0
+        const bank = await db.get(`bank_${user.id}`) || 0
 
-        const xp =
-            await db.get(`xp_${user.id}`) || 0
+        const xp = await db.get(`xp_${user.id}`) || 0
 
-        const level =
-            await db.get(`level_${user.id}`) || 1
+        const level = await db.get(`level_${user.id}`) || 1
 
-        const rep =
-            await db.get(`rep_${user.id}`) || 0
+        const rep = await db.get(`rep_${user.id}`) || 0
 
-        const canvas =
-            Canvas.createCanvas(1200, 850);
+        const Badges = await db.get(`badges_${user.id}`) || "Você ainda não tem nenhuma Badge😢"
 
-        const ctx =
-            canvas.getContext('2d');
+        const canvas = Canvas.createCanvas(1200, 850);
+
+        const ctx = canvas.getContext('2d');
         
 
         // Fundo
@@ -79,12 +68,7 @@ export default {
             ctx.fillStyle = '#0f0f0f'
             ctx.fillRect(0, 0, canvas.width, canvas.height)
         } else {
-            const backgroundPath = path.join(
-                __dirname,
-                '../../Assets/ProfileBacks',
-                `${backprofile}`,
-                'image.png'
-            )
+            const backgroundPath = path.join(__dirname, '../../Assets/ProfileBacks', `${backprofile}`, 'image.png')
 
             const background = await Canvas.loadImage(backgroundPath)
 
@@ -101,15 +85,9 @@ export default {
         }
         // Overlay
 
-        ctx.fillStyle =
-            'rgba(24, 24, 24, 0.25)'
+        ctx.fillStyle = 'rgba(24, 24, 24, 0.25)'
 
-        ctx.fillRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        )
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
 
         // Barra XP fundo
 
@@ -170,7 +148,7 @@ export default {
 
         ctx.fillStyle = '#ffffff'
 
-        ctx.font = '40px Sans'
+        ctx.font = '40px Segoe UI Emoji'
 
         await renderEmoji(
             ctx,
@@ -183,7 +161,7 @@ export default {
 
         ctx.fillStyle = '#00b0f4'
 
-        ctx.font = '30px Sans'
+        ctx.font = '30px Segoe UI Emoji'
 
         await renderEmoji(
             ctx,
@@ -196,20 +174,26 @@ export default {
 
         ctx.fillStyle = '#ffffff'
 
-        ctx.font = '24px Sans'
+        ctx.font = '24px Segoe UI Emoji'
 
-        await renderEmoji(
-            ctx,
-            `✨ ${xp} / ${nextLevelXP} XP`,
-            320,
-            270
-        )
+        await renderEmoji(ctx, `✨ ${xp} / ${nextLevelXP} XP`, 320, 270)
+
+        //BADGES
+        ctx.font = '60px Segoe UI Emoji UI Emoji'
+
+await renderEmoji(
+    ctx,
+    `${Badges}`,
+    20,
+    400,
+    60
+)
 
         // Money
 
         ctx.fillStyle = '#57f287'
 
-        ctx.font = '28px Sans'
+        ctx.font = '28px Segoe UI Emoji'
 
         await renderEmoji(
             ctx,
@@ -222,7 +206,7 @@ export default {
 
         ctx.fillStyle = '#f1c40f'
 
-        ctx.font = '28px Sans'
+        ctx.font = '28px Segoe UI Emoji'
 
         await renderEmoji(
             ctx,
@@ -235,7 +219,7 @@ export default {
 
         ctx.fillStyle = '#ff73fa'
 
-        ctx.font = '28px Sans'
+        ctx.font = '28px Segoe UI Emoji'
 
         await renderEmoji(
             ctx,
@@ -244,30 +228,6 @@ export default {
             220
         )
 
-        // Badge BOT
-
-        if (user.bot) {
-
-            ctx.fillStyle = '#5865f2'
-
-            ctx.fillRect(
-                320,
-                185,
-                80,
-                30
-            )
-
-            ctx.fillStyle = '#ffffff'
-
-            ctx.font = '20px Sans'
-
-            await renderEmoji(
-                ctx,
-                '🤖 BOT',
-                335,
-                207
-            )
-        }
 
         const attachment =
             new AttachmentBuilder(
