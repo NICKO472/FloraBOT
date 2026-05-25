@@ -134,3 +134,9 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+
+# Added Things by Nikinho
+json.sqlite
+SpaceCrew-90
+Debug
