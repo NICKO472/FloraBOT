@@ -13,7 +13,6 @@ const __dirname = dirname(__filename);
 
 
 
-
 const client = new Client({
   intents: [
     1, 512, 32768, 2, 128,
@@ -216,6 +215,10 @@ client.on('warn', (warning) => {
     console.warn('⚠️ Client Warning:', warning);
 });
 
+client.on('guildCreate', (guild) => {
+    console.log(`Fui adicionada à uma Guilda!`)
+})
+
 initialize()
 
 
@@ -229,3 +232,4 @@ import XPSystem from './Events/XPSystem.js';
 Handler(client)
 Mention(client)
 XPSystem(client)
+
