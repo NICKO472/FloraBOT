@@ -15,8 +15,6 @@ export default {
 
     async execute(interaction, client) {
 
-        await interaction.deferReply()
-
         function abbreviateNumber(number, precision = 2) {
 
             const suffsFromZeros = {

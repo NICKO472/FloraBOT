@@ -52,9 +52,9 @@ export default {
         if (money === null) money = 0
 
         if (money < 1) {
-            return interaction.reply({
+            return interaction.editReply({
                 content: `${interaction.user} Você não tem dinheiro!`,
-                ephemeral: true
+                flags: 64
             })
         }
 
@@ -75,7 +75,7 @@ export default {
 
             await db.set(`money_${interaction.user.id}`, 0)
 
-            return interaction.reply({
+            return interaction.editReply({
                 embeds: [embed]
             })
         }
@@ -85,16 +85,16 @@ export default {
             const valorNumero = Number(valor)
 
             if (valorNumero > money) {
-                return interaction.reply({
+                return interaction.editReply({
                     content: `${interaction.user} Você não pode depositar um valor que você não tem!`,
-                    ephemeral: true
+                    flags: 64
                 })
             }
 
             if (valorNumero < 1) {
-                return interaction.reply({
+                return interaction.editReply({
                     content: `${interaction.user} Para depositar a quantia precisa ser maior que 0!`,
-                    ephemeral: true
+                    flags: 64
                 })
             }
 
@@ -109,9 +109,9 @@ export default {
 
             await db.add(`bank_${interaction.user.id}`, valorNumero)
 
-            await db.subtract(`money_${interaction.user.id}`, valorNumero)
+            await db.sub(`money_${interaction.user.id}`, valorNumero)
 
-            return interaction.reply({
+            return interaction.editReply({
                 embeds: [embed2]
             })
         }
@@ -126,9 +126,9 @@ Para transferir faça da seguinte forma:
 `)
             .setTimestamp()
 
-        await interaction.reply({
+        await interaction.editReply({
             embeds: [embed3],
-            ephemeral: true
+            flags: 64
         })
     }
 }

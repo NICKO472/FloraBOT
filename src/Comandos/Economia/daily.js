@@ -42,8 +42,6 @@ export default {
 
     async execute(interaction, client) {
 
-await interaction.deferReply()
-
         const author = await db.get(`daily_${interaction.user.id}`)
 
         const timeout = 86400000

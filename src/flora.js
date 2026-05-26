@@ -225,7 +225,7 @@ initialize()
 
 export default client;
 
-import Handler from './Handler/index.js'
+import Handler from './Handlers/index.js'
 import Mention from './Events/Mention.js'
 import XPSystem from './Events/XPSystem.js';
 
