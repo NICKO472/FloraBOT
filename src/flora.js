@@ -221,7 +221,7 @@ client.on('guildCreate', (guild) => {
 
 initialize()
 
-
+client.on("")
 
 export default client;
 

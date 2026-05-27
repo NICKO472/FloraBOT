@@ -11,8 +11,6 @@ export default {
 
     async execute(interaction, client) {
 
-        await interaction.deferReply()
-
         let totalSeconds = client.uptime / 1000
 
         let days = Math.floor(totalSeconds / 86400)
