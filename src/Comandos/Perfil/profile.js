@@ -13,6 +13,10 @@ import { QuickDB } from 'quick.db'
 
 import { renderEmoji } from '../../Utils/Functions/renderEmoji.js'
 import { abbreviateNumber } from '../../Utils/Functions/Abbrev.js'
+Canvas.GlobalFonts.registerFromPath(
+  path.join(process.cwd(), 'Assets/Fonts/segoeui.ttf'),
+  'Segoe UI Emoji'
+)
 
 const db = new QuickDB()
 
@@ -42,7 +46,8 @@ export default {
             return interaction.reply({ content: `Infelizmente, Bots não podem ter perfis.`, flags: 64})
         }
 
-        let backprofile = await db.get(`profile_background_${user.id}`)
+        let backprofile = await db.get(`profile_background_${user.id}`) || "Background_BDS"
+        let verified = await db.get(`verified_${user.id}`)// || false
 
         const money = await db.get(`money_${user.id}`) || 0
 
@@ -144,6 +149,13 @@ export default {
 
         ctx.restore()
 
+        //VERIFIED
+        if(verified === true || user.id === process.env.OWNER_ID) {
+        ctx.fillStyle = '#ffffff'
+        ctx.font = '120px Segoe UI Emoji'
+        await renderEmoji(ctx, `<:verified:1509411213652660325>`, 185, 80, 70)
+        }
+
         // Username
 
         ctx.fillStyle = '#ffffff'
@@ -153,8 +165,8 @@ export default {
         await renderEmoji(
             ctx,
             user.displayName,
-            320,
-            120
+            300,
+            100
         )
 
         // Level
@@ -166,8 +178,8 @@ export default {
         await renderEmoji(
             ctx,
             `⭐ Nível ${level}`,
-            320,
-            170
+            300,
+            150
         )
 
         // XP
@@ -176,16 +188,16 @@ export default {
 
         ctx.font = '24px Segoe UI Emoji'
 
-        await renderEmoji(ctx, `✨ ${xp} / ${nextLevelXP} XP`, 320, 270)
+        await renderEmoji(ctx, `✨ ${xp} / ${nextLevelXP} XP`, 300, 250)
 
         //BADGES
-        ctx.font = '60px Segoe UI Emoji UI Emoji'
+        ctx.font = '60px Segoe UI Emoji'
 
 await renderEmoji(
     ctx,
     `${Badges}`,
     20,
-    400,
+    380,
     60
 )
 
@@ -198,8 +210,8 @@ await renderEmoji(
         await renderEmoji(
             ctx,
             `💵 Carteira: ${abbreviateNumber(money)}`,
-            320,
-            220
+            300,
+            200
         )
 
         // Bank
@@ -211,22 +223,24 @@ await renderEmoji(
         await renderEmoji(
             ctx,
             `🏦 Banco: ${abbreviateNumber(bank)}`,
-            620,
-            220
+            600,
+            200
         )
 
         // Rep
-
+        ctx.fillStyle = '#1c1c1c'
+       ctx.fillRect(855, 165, 270, 50)
         ctx.fillStyle = '#ff73fa'
 
         ctx.font = '28px Segoe UI Emoji'
 
         await renderEmoji(
             ctx,
-            `⭐ Estrelas: ${abbreviateNumber(rep)}`,
-            880,
-            220
+            `⭐ Estrelas: ${abbreviateNumber(rep)}`, //rep
+            860,
+            200
         )
+
 
 
         const attachment =

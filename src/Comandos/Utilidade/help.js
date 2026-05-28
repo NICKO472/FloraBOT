@@ -78,7 +78,7 @@ export default {
             .setColor('#FFFFFF')
             .setDescription('Selecione uma categoria abaixo.')
 
-        await interaction.reply({
+        await interaction.editReply({
             embeds: [embed],
             components: [row]
         })

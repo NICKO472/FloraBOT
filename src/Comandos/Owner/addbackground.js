@@ -63,8 +63,6 @@ export default {
             })
         }
 
-        await interaction.deferReply({ flags: 64 })
-
         const nome = interaction.options.getString('nome')
         const preco = interaction.options.getInteger('preco')
         const imagem = interaction.options.getAttachment('imagem')

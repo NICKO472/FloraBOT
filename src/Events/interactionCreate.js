@@ -99,7 +99,7 @@ export default {
                                 expirationTime - now
                             ) / 1000
 
-                        return interaction.reply({
+                        return interaction.eeply({
                             content:
                                 `⏰ Espere ${timeLeft.toFixed(1)}s para usar novamente.`,
                             flags: 64
