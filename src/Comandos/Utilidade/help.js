@@ -50,24 +50,6 @@ export default {
                     value: 'Quinto',
                     description: 'Comandos de Economia!'
                 },
-                {
-                    label: 'Informação',
-                    emoji: '🔎',
-                    value: 'Sexto',
-                    description: 'Comandos de Informação!'
-                },
-                {
-                    label: 'Botlists',
-                    emoji: '🔬',
-                    value: 'Setimo',
-                    description: 'Comandos de Botlists!'
-                },
-                {
-                    label: 'Música',
-                    emoji: '🎶',
-                    value: 'Oitavo',
-                    description: 'Comandos de Música!'
-                }
             ])
 
         const row = new ActionRowBuilder()
@@ -75,8 +57,8 @@ export default {
 
         const embed = new EmbedBuilder()
             .setTitle('Meus comandos')
-            .setColor('#FFFFFF')
-            .setDescription('Selecione uma categoria abaixo.')
+            .setColor('#c200c5')
+            .setDescription('**Selecione uma categoria abaixo.**')
 
         await interaction.editReply({
             embeds: [embed],
@@ -94,7 +76,7 @@ export default {
             if (i.user.id !== interaction.user.id) {
                 return i.reply({
                     content: 'Você não pode usar este menu.',
-                    ephemeral: true
+                    flags: 64
                 })
             }
 
@@ -104,7 +86,7 @@ export default {
 
                 embedMenu = new EmbedBuilder()
                     .setTitle('Meus comandos')
-                    .setColor('#FFFFFF')
+                    .setColor('#c200c5')
                     .setDescription('Selecione uma categoria abaixo.')
             }
 
@@ -112,22 +94,17 @@ export default {
 
                 embedMenu = new EmbedBuilder()
                     .setTitle('__Painel de Ajuda__')
-                    .setColor('#FFFFFF')
+                    .setColor('#c200c5')
                     .setTimestamp()
-                    .setDescription(`
-/setprefix
-/config
-`)
+                    .setDescription(`/config`)
             }
-
             if (i.values[0] === 'Terceiro') {
 
                 embedMenu = new EmbedBuilder()
                     .setTitle('__Painel de Ajuda__')
-                    .setColor('#FFFFFF')
+                    .setColor('#c200c5')
                     .setTimestamp()
-                    .setDescription(`
-/help
+                    .setDescription(`/help
 /ping
 /avatar
 /serverinfo
@@ -135,77 +112,30 @@ export default {
 /servericon
 /uptime
 /reportbug
-`)
+/botinfo`)
             }
 
             if (i.values[0] === 'Quarto') {
 
                 embedMenu = new EmbedBuilder()
                     .setTitle('__Painel de Ajuda__')
-                    .setColor('#FFFFFF')
+                    .setColor('#c200c5')
                     .setTimestamp()
-                    .setDescription(`
-/perfil
-`)
+                    .setDescription(`/perfil`)
             }
 
             if (i.values[0] === 'Quinto') {
 
                 embedMenu = new EmbedBuilder()
                     .setTitle('__Painel de Ajuda__')
-                    .setColor('#FFFFFF')
+                    .setColor('#c200c5')
                     .setTimestamp()
-                    .setDescription(`
-/work
+                    .setDescription(`/work
 /atm
 /deposit
 /sacar
 /daily
-/transactions
-`)
-            }
-
-            if (i.values[0] === 'Sexto') {
-
-                embedMenu = new EmbedBuilder()
-                    .setTitle('__Painel de Ajuda__')
-                    .setColor('#FFFFFF')
-                    .setTimestamp()
-                    .setDescription(`
-/botinfo
-/invite
-`)
-            }
-
-            if (i.values[0] === 'Setimo') {
-
-                embedMenu = new EmbedBuilder()
-                    .setTitle('__Painel de Ajuda__')
-                    .setColor('#FFFFFF')
-                    .setTimestamp()
-                    .setDescription(`
-/addbot
-/aprovar
-/reprovar
-/botlist
-`)
-            }
-
-            if (i.values[0] === 'Oitavo') {
-
-                embedMenu = new EmbedBuilder()
-                    .setTitle('__Painel de Ajuda__')
-                    .setColor('#FFFFFF')
-                    .setTimestamp()
-                    .setDescription(`
-/play
-/queue
-/leave
-/pause
-/resume
-/skip
-/volume
-`)
+/transactions`)
             }
 
             await i.update({

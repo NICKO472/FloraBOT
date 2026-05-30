@@ -1,3 +1,5 @@
+import XPSystem from "./XPSystem.js"
+
 export default {
     name: 'interactionCreate',
 
@@ -136,6 +138,8 @@ export default {
             // =========================
             // EXECUTAR COMANDO
             // =========================
+            XPSystem(interaction)
+
 
             await command.execute(
                 interaction,

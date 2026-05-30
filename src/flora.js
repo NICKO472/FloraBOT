@@ -227,11 +227,9 @@ export default client;
 
 import Handler from './Handlers/index.js'
 import Mention from './Events/Mention.js'
-import XPSystem from './Events/XPSystem.js';
 
 Handler(client)
 Mention(client)
-XPSystem(client)
 
 Canvas.GlobalFonts.registerFromPath(
   path.join(process.cwd(), 'Assets/Fonts/segoeui.ttf'),
