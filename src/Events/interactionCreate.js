@@ -138,14 +138,15 @@ export default {
             // =========================
             // EXECUTAR COMANDO
             // =========================
-            XPSystem(interaction)
+            
 
 
             await command.execute(
                 interaction,
                 client
             )
-
+            
+            XPSystem(interaction)
         } catch (error) {
 
             console.error(
