@@ -137,81 +137,60 @@ export default {
 
             if (user.bot) {
 
-                return interaction.reply({
+                return interaction.editReply({
                     content: `Infelizmente, Bots não podem ter perfis.`,
                     flags: 64
                 })
             }
 
-            let backprofile =
-                await db.get(`profile_background_${user.id}`) || "Background_9"
+            let backprofile = await db.get(`profile_background_${user.id}`) || false
+            
+            let premium = await db.get(`premium_${user.id}`) || false
+            let premiumshow = await db.get(`premiumover_${user.id}`) || true
 
-            let verified =
-                await db.get(`verified_${user.id}`)
+            let verified = await db.get(`verified_${user.id}`)
 
-            const money =
-                await db.get(`money_${user.id}`) || 0
+            const money = await db.get(`money_${user.id}`) || 0
 
-            const bank =
-                await db.get(`bank_${user.id}`) || 0
+            const bank = await db.get(`bank_${user.id}`) || 0
 
-            const xp =
-                await db.get(`xp_${user.id}`) || 0
+            const xp = await db.get(`xp_${user.id}`) || 0
 
-            const level =
-                await db.get(`level_${user.id}`) || 1
+            const level = await db.get(`level_${user.id}`) || 1
 
-            const rep =
-                await db.get(`rep_${user.id}`) || 0
+            const rep = await db.get(`rep_${user.id}`) || 0
 
-            const Badges =
-                await db.get(`badges_${user.id}`)
-                || "Você ainda não tem nenhuma Badge😢"
+            const Badges = await db.get(`badges_${user.id}`) || "Você ainda não tem nenhuma Badge😢"
 
-            const canvas =
-                Canvas.createCanvas(1200, 850)
+            const canvas = Canvas.createCanvas(1200, 850)
 
-            const ctx =
-                canvas.getContext('2d')
+            const ctx = canvas.getContext('2d')
 
             // FUNDO
 
-            const backgroundPath =
-                path.join(
-                    __dirname,
-                    '../../Assets/ProfileBacks',
-                    `${backprofile}`,
-                    'image.png'
-                )
+if (backprofile !== false) { 
+          const backgroundPath = path.join(__dirname, '../../Assets/ProfileBacks', `${backprofile}`, 'image.png') 
+        const background = await Canvas.loadImage(backgroundPath) 
+        const escala = Math.max(canvas.width / background.width, canvas.height / background.height) 
+        const novaLargura = background.width * escala 
+        const novaAltura = background.height * escala 
+        const x = (canvas.width - novaLargura) / 2 
+        const y = (canvas.height - novaAltura) / 2 
+        ctx.drawImage(background, x, y, novaLargura, novaAltura)   
+     } else { 
+       ctx.fillStyle = '#0f0f0f'
+     ctx.fillRect(0, 0, canvas.width, canvas.height)
+    }
 
-            const background =
-                await Canvas.loadImage(backgroundPath)
-
-            const escala =
-                Math.max(
-                    canvas.width / background.width,
-                    canvas.height / background.height
-                )
-
-            const novaLargura =
-                background.width * escala
-
-            const novaAltura =
-                background.height * escala
-
-            const x =
-                (canvas.width - novaLargura) / 2
-
-            const y =
-                (canvas.height - novaAltura) / 2
-
-            ctx.drawImage(
-                background,
-                x,
-                y,
-                novaLargura,
-                novaAltura
-            )
+            //PREMIUM OVERLAY
+            const PremiumOverPath = path.join(__dirname, '../../Assets/ProfileLayer/PremiumOver.png')
+            
+            if(premium === true) {
+                if(premiumshow === true) {
+                 const PremiumOver = await Canvas.loadImage(PremiumOverPath)
+                 ctx.drawImage(PremiumOver, 0, 0, canvas.width, canvas.height)
+                }
+}
 
             // OVERLAY
 
@@ -281,7 +260,18 @@ export default {
                 )
             }
 
-            // USERNAME
+            // USERNAME BOX
+
+            const usernameText =
+                user.displayName
+
+            const usernameBox =
+                drawStatBox(ctx, {
+                    text: usernameText,
+                    x: 300,
+                    y: 80,
+                    textColor: '#ffffff'
+                })
 
             ctx.fillStyle =
                 '#ffffff'
@@ -291,15 +281,16 @@ export default {
 
             await renderEmoji(
                 ctx,
-                user.displayName,
-                300,
-                100
+                usernameText,
+                usernameBox.textX,
+                usernameBox.textY
             )
+
 
             // LEVEL
 
             ctx.fillStyle =
-                '#00b0f4'
+                '#c300f4'
 
             ctx.font =
                 '30px Segoe UI Emoji'
@@ -350,7 +341,7 @@ export default {
                 )
 
             ctx.fillStyle =
-                '#00b0f4'
+                '#e600ff'
 
             ctx.fillRect(
                 300,
