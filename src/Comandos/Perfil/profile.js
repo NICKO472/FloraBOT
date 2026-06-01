@@ -152,8 +152,6 @@ export default {
 
             const money = await db.get(`florins_${user.id}`) || 0
 
-            const bank = await db.get(`bank_${user.id}`) || 0
-
             const xp = await db.get(`xp_${user.id}`) || 0
 
             const level = await db.get(`level_${user.id}`) || 1

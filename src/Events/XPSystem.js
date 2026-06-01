@@ -10,6 +10,8 @@ export default async function XPSystem(interaction) {
         await db.get(`xp_${interaction.user.id}`)
     ) || 0
 
+    const florins = await db.get(`florins_${interaction.user.id}`) || 0
+
     const level = Number(
         await db.get(`level_${interaction.user.id}`)
     ) || 1
@@ -41,11 +43,13 @@ export default async function XPSystem(interaction) {
             newXP - requiredXP
         )
 
+        await db.set(`florins_${interaction.user.id}`, florins + 500)
+
         try {
 
             await interaction.followUp({
                 content:
-                    `🎉 ${interaction.user} subiu para o nível **${newLevel}**!`, ephemeral: true
+                    `🎉 ${interaction.user} subiu para o nível **${newLevel} e ganhou 500 Florins🌸**!`, ephemeral: true
             })
 
         } catch (err) {
