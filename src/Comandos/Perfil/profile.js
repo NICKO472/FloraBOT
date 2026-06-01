@@ -150,7 +150,7 @@ export default {
 
             let verified = await db.get(`verified_${user.id}`)
 
-            const money = await db.get(`money_${user.id}`) || 0
+            const money = await db.get(`florins_${user.id}`) || 0
 
             const bank = await db.get(`bank_${user.id}`) || 0
 
@@ -366,7 +366,7 @@ if (backprofile !== false) {
             // MONEY BOX
 
             const moneyText =
-                `💵 Carteira: ${abbreviateNumber(money)}`
+                `🌸 Florins: ${abbreviateNumber(money)}`
 
             const moneyBox =
                 drawStatBox(ctx, {

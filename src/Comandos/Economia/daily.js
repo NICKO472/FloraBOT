@@ -68,7 +68,7 @@ export default {
         if (vip === 'Vip') {
 
             const dinheiro =
-                Math.floor(Math.random() * 15000) + 26475
+                Math.floor(Math.random() * 80) + 300
 
             const dinheiro2 = abbreviateNumber(dinheiro)
 
@@ -85,14 +85,14 @@ export default {
 
             if (a === null) a = ``
 
-            await db.add(`money_${interaction.user.id}`, dinheiro)
+            await db.add(`florins_${interaction.user.id}`, dinheiro)
 
             await db.set(`daily_${interaction.user.id}`, Date.now())
 
             await db.set(
                 `transactions_${interaction.user.id}`,
                 `${a}
-***${interaction.user.tag}*** pegou seu daily: ***\`${dinheiro2}\`*** **moedas**`
+***${interaction.user.tag}*** pegou seu daily: ***\`${dinheiro2}\`*** **🌸Florins**`
             )
 
             return interaction.editReply({
@@ -101,28 +101,24 @@ export default {
         }
 
         const din =
-            Math.floor(Math.random() * 10000) + 17650
+            Math.floor(Math.random() * 20) + 150
 
         const dinheiro2 = abbreviateNumber(din)
 
         const embed = new Discord.EmbedBuilder()
             .setDescription(
-                `***${interaction.user.tag}*** pegou seu daily: **\`${dinheiro2}\` moedas**`
+                `***${interaction.user.tag}*** pegou seu daily: **\`${dinheiro2}\` 🌸Florins**`
             )
             .setColor('#FFFFFF')
 
-        let a = await db.get(`transactions_${interaction.user.id}`)
-
-        if (a === null) a = ``
-
-        await db.add(`money_${interaction.user.id}`, din)
+        await db.add(`florins_${interaction.user.id}`, din)
 
         await db.set(`daily_${interaction.user.id}`, Date.now())
 
         await db.set(
             `transactions_${interaction.user.id}`,
             `${a}
-***${interaction.user.tag}*** pegou seu daily: ***\`${dinheiro2}\`*** **moedas**`
+***${interaction.user.tag}*** pegou seu daily: ***\`${dinheiro2}\`*** **🌸Florins**`
         )
 
         await interaction.editReply({

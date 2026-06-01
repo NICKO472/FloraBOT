@@ -50,18 +50,13 @@ export default {
             interaction.options.getUser('user') ||
             interaction.user
 
-        let money = await db.get(`money_${user.id}`)
+        let money = await db.get(`florins_${user.id}`)
         if (money === null) money = 0.00
 
-        let bank = await db.get(`bank_${user.id}`)
-        if (bank === null) bank = 0.00
-
         const money2 = abbreviateNumber(money)
-        const bank2 = abbreviateNumber(bank)
 
         const simplemoney = new Intl.NumberFormat('pt-BR').format(money)
-
-        const simplebank = new Intl.NumberFormat('pt-BR').format(bank)
+        console.log(Number.parseFloat(money))
 
         const embed = new Discord.EmbedBuilder()
             .setAuthor({
@@ -69,9 +64,7 @@ export default {
                 iconURL: user.displayAvatarURL()
             })
             .setDescription(`
-💵 Carteira: **${money2} (${simplemoney})**
-🏦 Banco: **${bank2} (${simplebank})**
-`)
+ Atualmente você tem ***${money2}*** 🌸Florins! **(${simplemoney})**`)
             .setColor('#FFFFFF')
 
         await interaction.editReply({
